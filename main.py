@@ -22,6 +22,7 @@ logger.addHandler(timehandler)
 priceChannel = "-1001772797262"
 groupIds = ["-1001501807639", "-1001228775770"]  # dpal wallet group id
 priceUrl = "https://api.binance.com/api/v3/ticker/price?symbol=DOGEUSDT"  # "https://chain.so/api/v2/get_price/DOGE/USD"
+botToken = ""
 timeout = 60
 bot = telegram.Bot(token=botToken)
 
