@@ -26,6 +26,16 @@ botToken = ""
 timeout = 60
 bot = telegram.Bot(token=botToken)
 
+
+def deleteMsg(_msg):
+    try:
+        if _msg is not None:
+            _msg.delete()
+    except BaseException as e:
+        logger.error(">>>>>>>>>>>>>>>>>> msg delete error", e)
+        logger.error(e)
+
+
 msgTokens = {}
 try:
     while True:
@@ -35,14 +45,15 @@ try:
             logger.info(f">>>>>>>>>>>>>>>>>> current price:{price}")
 
             if price > 0:
-                bot.send_message(chat_id=priceChannel, text=f"当前价格: {price}")
+                newchannelMsg = bot.send_message(chat_id=priceChannel, text=f"当前价格: {price}")
+                oldChannelMsg = dict(msgTokens).get(priceChannel, None)
+                deleteMsg(oldChannelMsg)
+                msgTokens[priceChannel] = newchannelMsg
 
                 for gId in groupIds:
                     newMsgObj = bot.send_message(chat_id=gId, text=f"当前价格: {price}")
-
                     oldMsg = dict(msgTokens).get(gId, None)
-                    if oldMsg is not None:
-                        oldMsg.delete()
+                    deleteMsg(oldMsg)
                     msgTokens[gId] = newMsgObj
 
         except BaseException as e:
@@ -52,4 +63,4 @@ try:
 except SystemExit as f:
     for cmsg in msgTokens.values():
         if cmsg is not None:
-            cmsg.delete()
+            deleteMsg(cmsg)
