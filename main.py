@@ -19,7 +19,6 @@ timehandler = logging.handlers.TimedRotatingFileHandler(
 )
 logger.addHandler(timehandler)
 
-priceChannel = "-1001772797262"
 groupIds = ["-1001501807639", "-1001228775770"]  # dpal wallet group id
 priceUrl = "https://api.binance.com/api/v3/ticker/price?symbol=DOGEUSDT"  # "https://chain.so/api/v2/get_price/DOGE/USD"
 botToken = ""
@@ -45,11 +44,6 @@ try:
             logger.info(f">>>>>>>>>>>>>>>>>> current price:{price}")
 
             if price > 0:
-                newchannelMsg = bot.send_message(chat_id=priceChannel, text=f"当前价格: {price}")
-                oldChannelMsg = dict(msgTokens).get(priceChannel, None)
-                deleteMsg(oldChannelMsg)
-                msgTokens[priceChannel] = newchannelMsg
-
                 for gId in groupIds:
                     newMsgObj = bot.send_message(chat_id=gId, text=f"当前价格: {price}")
                     oldMsg = dict(msgTokens).get(gId, None)
